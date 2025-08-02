@@ -9,3 +9,4 @@ cohere
 python-docx
 PyPDF2
 gunicorn
+flask_cors
