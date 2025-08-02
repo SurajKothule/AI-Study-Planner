@@ -1,0 +1,57 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+*.log
+*.pot
+*.mo
+*.pkl
+*.h5
+*.hdf5
+*.joblib
+.DS_Store
+.env
+.env.*
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Node
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# Data
+*.csv
+*.tsv
+data/*.csv
+data/*.json
+uploads/
+
+# Models
+models/*.pkl
+models/*.joblib
+
+# Misc
+*.bak
+*.swp
+*.tmp
+*.orig
+*.pdf
+*.docx
+*.pptx
+*.xlsx
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Ignore OS files
+Thumbs.db
