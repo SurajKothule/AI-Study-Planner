@@ -8,3 +8,4 @@ python-dotenv
 cohere
 python-docx
 PyPDF2
+gunicorn
