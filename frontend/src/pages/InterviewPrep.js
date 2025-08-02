@@ -25,7 +25,7 @@ export default function InterviewPrep() {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/interview_questions", formData);
+      const response = await axios.post("https://ai-study-planner-t3np.onrender.com/api/interview_questions", formData);
       setQaPairs(response.data.questions);
     } catch (err) {
       alert("❌ Failed to generate questions from file: " + (err.response?.data?.error || err.message));
@@ -43,7 +43,7 @@ export default function InterviewPrep() {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/interview", {
+      const response = await axios.post("https://ai-study-planner-t3np.onrender.com/api/interview", {
         resumeText,
       });
       setQaPairs(response.data.qaPairs);
