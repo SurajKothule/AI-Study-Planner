@@ -1,8 +1,10 @@
 import json
 import os
 
-RESUME_DB = "uploads/resume_store.json"
 
+RESUME_DB = "uploads/resume_store.json"
+# Ensure uploads directory exists
+os.makedirs(os.path.dirname(RESUME_DB), exist_ok=True)
 # Ensure file exists
 if not os.path.exists(RESUME_DB):
     with open(RESUME_DB, "w") as f:
