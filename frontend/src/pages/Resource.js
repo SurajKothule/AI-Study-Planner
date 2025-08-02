@@ -1,5 +1,5 @@
 // src/pages/Resource.js
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import ResourceList from "../components/ResourceList";
 
 export default function Resource() {
@@ -13,7 +13,7 @@ export default function Resource() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/api/resources?topic=${encodeURIComponent(query)}`
+        `https://ai-study-planner-t3np.onrender.com/api/resources?topic=${encodeURIComponent(query)}`
       );
       if (!res.ok) throw new Error("Failed to fetch resources");
       const data = await res.json();
@@ -22,6 +22,9 @@ export default function Resource() {
       setSearchError(err.message);
     }
   };
+
+  // Memoize the resource lists to avoid unnecessary re-renders
+  const memoizedResources = useMemo(() => resources, [resources]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -47,9 +50,9 @@ export default function Resource() {
         {searchError && (
           <div className="text-red-600 text-center mb-2">⚠️ {searchError}</div>
         )}
-        {resources && <ResourceList resources={resources} />}
+        {memoizedResources && <ResourceList resources={memoizedResources} />}
 
-        {!resources && (
+        {!memoizedResources && (
           <p className="text-sm text-gray-500 text-center mt-2">
             Enter a topic to find videos, courses, and repositories.
           </p>
