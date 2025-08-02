@@ -16,7 +16,7 @@ export default function Roadmap() {
     setRoadmap(null);
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/roadmap?topic=${encodeURIComponent(topic)}`);
+      const response = await fetch(`https://ai-study-planner-t3np.onrender.com/api/roadmap?topic=${encodeURIComponent(topic)}`);
       const data = await response.json();
 
       if (data && data.roadmap) {
