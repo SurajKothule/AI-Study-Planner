@@ -63,13 +63,3 @@ cd AI_Study_Planner
 ### 4. Usage
 - Open http://localhost:3000 in your browser
 - Use the dashboard to generate roadmaps, predict study time, and more
-
-## Notes
-- Do not commit your `.env` or API keys to GitHub
-- Large files, models, and data are ignored by `.gitignore`
-- For any issues, check the terminal for errors or contact the author
-
----
-
-**Enjoy your AI learning journey!**
-
