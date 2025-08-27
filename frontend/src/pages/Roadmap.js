@@ -27,8 +27,12 @@ export default function Roadmap() {
       .filter((s) => s.length > 0);
   }, [roadmap]);
 
-  const handleGenerate = async () => {
-    if (!topic.trim()) {
+  const handleGenerate = async (providedTopic) => {
+    const topicToUse = (typeof providedTopic === "string" && providedTopic.length > 0)
+      ? providedTopic
+      : topic;
+
+    if (!topicToUse.trim()) {
       setError("Please enter a topic.");
       return;
     }
@@ -38,12 +42,14 @@ export default function Roadmap() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API}/api/roadmap?topic=${encodeURIComponent(topic)}`);
+      const response = await fetch(`${API}/api/roadmap?topic=${encodeURIComponent(topicToUse)}`);
       if (!response.ok) throw new Error("Failed to generate roadmap");
       const data = await response.json();
 
       if (data && data.roadmap) {
         setRoadmap(data.roadmap);
+        // Ensure input shows the actual topic used
+        if (topic !== topicToUse) setTopic(topicToUse);
         setTimeout(() => {
           if (resultRef.current) {
             resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -93,7 +99,8 @@ export default function Roadmap() {
 
   const handleUseSuggestion = (s) => {
     setTopic(s);
-    setTimeout(() => handleGenerate(), 0);
+    setError("");
+    handleGenerate(s);
   };
 
   useEffect(() => {

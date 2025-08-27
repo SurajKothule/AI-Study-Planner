@@ -2,7 +2,9 @@ import React from "react";
 
 export default function ResourceList({ resources }) {
   if (!resources) {
-    return <p>Loading resources...</p>;
+    return (
+      <div className="mt-6 text-center text-gray-500">Loading resources...</div>
+    );
   }
 
   const {
@@ -11,80 +13,119 @@ export default function ResourceList({ resources }) {
     github_repos = []
   } = resources;
 
-  if (
+  const empty =
     youtube_videos.length === 0 &&
     coursera_courses.length === 0 &&
-    github_repos.length === 0
-  ) {
-    return <p>No resources found.</p>;
+    github_repos.length === 0;
+
+  if (empty) {
+    return (
+      <div className="mt-6 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded p-4">
+        No resources found. Try a broader topic or a different keyword.
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-6 mt-4">
+    <div className="space-y-8 mt-6">
       {youtube_videos.length > 0 && (
-        <div>
-          <h3 className="text-xl font-semibold mb-2">YouTube Videos</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {youtube_videos.map(video => (
-              <div
-                key={video.videoId}
-                className="border rounded shadow p-2 bg-white"
-              >
-                <h4 className="font-medium text-center mb-2">{video.title}</h4>
-                <iframe
-                  width="100%"
-                  height="225"
-                  src={`https://www.youtube.com/embed/${video.videoId}`}
-                  title={video.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="rounded"
-                ></iframe>
-              </div>
+        <section className="bg-white rounded-lg shadow border border-gray-200">
+          <header className="px-4 py-3 border-b flex items-center justify-between">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              <span>▶️</span> YouTube Videos
+            </h3>
+            <span className="text-xs bg-gray-100 border px-2 py-1 rounded text-gray-700">
+              {youtube_videos.length} items
+            </span>
+          </header>
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {youtube_videos.map((video) => (
+              <article key={video.videoId} className="rounded overflow-hidden border">
+                <div className="aspect-video bg-black">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${video.videoId}`}
+                    title={video.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  ></iframe>
+                </div>
+                <div className="p-3">
+                  <h4 className="font-medium text-gray-800 line-clamp-2">{video.title}</h4>
+                  <a
+                    href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-2 text-sm text-indigo-600 hover:underline"
+                  >
+                    Watch on YouTube
+                  </a>
+                </div>
+              </article>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
       {coursera_courses.length > 0 && (
-        <div>
-          <h3 className="text-xl font-semibold mb-2">Coursera Courses</h3>
-          <ul className="space-y-2">
+        <section className="bg-white rounded-lg shadow border border-gray-200">
+          <header className="px-4 py-3 border-b flex items-center justify-between">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              <span>🎓</span> Coursera Courses
+            </h3>
+            <span className="text-xs bg-gray-100 border px-2 py-1 rounded text-gray-700">
+              {coursera_courses.length} items
+            </span>
+          </header>
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             {coursera_courses.map((course, index) => (
-              <li key={index}>
+              <article key={index} className="border rounded p-4">
+                <h4 className="font-semibold text-gray-800 mb-1">{course.title}</h4>
+                <p className="text-sm text-gray-500 mb-2">Provider: Coursera</p>
                 <a
                   href={course.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+                  className="inline-block text-sm text-indigo-600 hover:underline"
                 >
-                  {course.title}
+                  View on Coursera
                 </a>
-              </li>
+              </article>
             ))}
-          </ul>
-        </div>
+          </div>
+        </section>
       )}
 
       {github_repos.length > 0 && (
-        <div>
-          <h3 className="text-xl font-semibold mb-2">GitHub Repositories</h3>
-          <ul className="space-y-2">
+        <section className="bg-white rounded-lg shadow border border-gray-200">
+          <header className="px-4 py-3 border-b flex items-center justify-between">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              <span>💻</span> GitHub Repositories
+            </h3>
+            <span className="text-xs bg-gray-100 border px-2 py-1 rounded text-gray-700">
+              {github_repos.length} items
+            </span>
+          </header>
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             {github_repos.map((repo, index) => (
-              <li key={index}>
+              <article key={index} className="border rounded p-4">
+                <h4 className="font-semibold text-gray-800 mb-1">{repo.repo}</h4>
+                <p className="text-sm text-gray-500 mb-2">Open-source repository</p>
                 <a
                   href={repo.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+                  className="inline-block text-sm text-indigo-600 hover:underline"
                 >
-                  {repo.repo}
+                  View on GitHub
                 </a>
-              </li>
+              </article>
             ))}
-          </ul>
-        </div>
+          </div>
+        </section>
       )}
     </div>
   );
