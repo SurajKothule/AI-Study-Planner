@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const API = process.env.REACT_APP_API_BASE || "";
+const API = process.env.REACT_APP_API_BASE || "http://127.0.0.1:5000";
 
 export default function Dashboard() {
   const [formData, setFormData] = useState({
@@ -72,9 +72,20 @@ export default function Dashboard() {
         throw new Error(`API request failed: ${response.status} - ${rawText}`);
       }
 
+      // Handle empty or non-JSON responses gracefully
+      if (!rawText || rawText.trim().length === 0) {
+        throw new Error("Empty response from server. Please try again later.");
+      }
+
       let data;
       try {
-        data = JSON.parse(rawText);
+        const contentType = response.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+          data = JSON.parse(rawText);
+        } else {
+          console.error("❌ Non-JSON response. Raw:", rawText);
+          throw new Error("Server returned non-JSON response. Check API base URL and CORS.");
+        }
       } catch (e) {
         console.error("❌ JSON parse failed. Raw:", rawText);
         throw new Error("Invalid JSON from server. Check API base URL and CORS.");
