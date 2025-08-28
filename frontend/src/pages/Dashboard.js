@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+const API = process.env.REACT_APP_API_BASE || "";
 
 export default function Dashboard() {
   const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ export default function Dashboard() {
     console.log("🚀 Sending request with data:", requestData);
 
     try {
-      const response = await fetch("/api/predict", {
+      const response = await fetch(`${API}/api/predict`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,13 +66,19 @@ export default function Dashboard() {
 
       console.log("📡 Response status:", response.status);
 
+      const rawText = await response.text();
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("❌ API Error:", errorText);
-        throw new Error(`API request failed: ${response.status} - ${errorText}`);
+        console.error("❌ API Error:", rawText);
+        throw new Error(`API request failed: ${response.status} - ${rawText}`);
       }
 
-      const data = await response.json();
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (e) {
+        console.error("❌ JSON parse failed. Raw:", rawText);
+        throw new Error("Invalid JSON from server. Check API base URL and CORS.");
+      }
       console.log("✅ API Response:", data);
       setResult(data);
     } catch (err) {

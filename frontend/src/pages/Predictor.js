@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+const API = process.env.REACT_APP_API_BASE || "https://study-time-predicter-api-1.onrender.com";
 
 export default function Predictor() {
   const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ export default function Predictor() {
 
     try {
       // ✅ Fixed API endpoint (added /predict)
-      const response = await fetch("https://study-time-predicter-api-1.onrender.com/api/predict", {
+      const response = await fetch(`${API}/api/predict`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,11 +60,17 @@ export default function Predictor() {
         }),
       });
 
+      const rawText = await response.text();
       if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`);
+        throw new Error(`API request failed: ${response.status} - ${rawText}`);
       }
-
-      const data = await response.json();
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (e) {
+        console.error("Invalid JSON from server. Raw:", rawText);
+        throw new Error("Invalid JSON from server. Check API base URL and CORS.");
+      }
       setResult(data);
     } catch (err) {
       setError(err.message || "Failed to get prediction. Please try again.");
