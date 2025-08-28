@@ -30,7 +30,7 @@ def generate_interview_questions(resume_text: str):
 You are an experienced technical interviewer.
 Carefully read the candidate’s resume below and generate exactly 10 high-quality interview questions that match their projects, skills, and experience.
 
-For each question, also generate a 3–5 sentence sample answer based only on the resume.
+For each question, also generate a 150-300 sentence sample answer based only on the resume.
 
 Strict output format (no extra commentary):
 Q1: <question>
