@@ -1,4 +1,5 @@
 from flask import Flask, Blueprint, request, jsonify
+import json
 import os
 from werkzeug.utils import secure_filename
 import requests
@@ -43,7 +44,16 @@ def api_predict():
                     timeout=t,
                 )
                 if resp.status_code == 200:
-                    return jsonify(resp.json()), 200
+                    # Ensure non-empty and JSON response; otherwise fallback
+                    raw_text = (resp.text or "").strip()
+                    if not raw_text:
+                        last_err = RuntimeError("External API returned 200 with empty body")
+                    else:
+                        try:
+                            data = resp.json()
+                            return jsonify(data), 200
+                        except ValueError:
+                            last_err = RuntimeError("External API returned 200 with non-JSON body")
                 last_err = RuntimeError(f"External API {resp.status_code}: {resp.text[:200]}")
             except requests.exceptions.RequestException as e:
                 last_err = e
